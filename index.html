@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поймай Квадрат</title>
+    <style>
+        body { margin: 0; background: #222; color: white; font-family: sans-serif; text-align: center; overflow: hidden; }
+        #game-area { width: 100vw; height: 80vh; position: relative; cursor: crosshair; }
+        #target { 
+            width: 50px; height: 50px; background: #00ff88; position: absolute; 
+            border-radius: 8px; transition: 0.1s; cursor: pointer;
+        }
+        .stats { font-size: 24px; padding: 20px; }
+    </style>
+</head>
+<body>
+    <div class="stats">Счет: <span id="score">0</span> | Время: <span id="time">30</span></div>
+    <div id="game-area">
+        <div id="target"></div>
+    </div>
+
+    <script>
+        let score = 0;
+        let timeLeft = 30;
+        const target = document.getElementById('target');
+        const scoreEl = document.getElementById('score');
+        const timeEl = document.getElementById('time');
+
+        function move() {
+            const x = Math.random() * (window.innerWidth - 50);
+            const y = Math.random() * (window.innerHeight * 0.8 - 50);
+            target.style.left = x + 'px';
+            target.style.top = y + 'px';
+        }
+
+        target.onclick = () => {
+            if (timeLeft <= 0) return;
+            score++;
+            scoreEl.innerText = score;
+            move();
+        };
+
+        const timer = setInterval(() => {
+            timeLeft--;
+            timeEl.innerText = timeLeft;
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                target.style.display = 'none';
+                alert('Игра окончена! Твой счет: ' + score);
+                location.reload();
+            }
+        }, 1000);
+
+        move(); // Начальная позиция
+    </script>
+</body>
+</html>
